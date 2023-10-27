@@ -1,10 +1,8 @@
 import { useContext, useEffect, useRef } from "react";
 import { userContext } from "../../App";
-import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-    const { user, handleSignIn, providerGoogle } = useContext(userContext);
-    const navigate = useNavigate();
+    const { user, handleSignIn, handleSignInWithEmailPassword, providerGoogle, navigate } = useContext(userContext);
     const email = useRef('');
     const password = useRef('');
 
@@ -14,7 +12,7 @@ const Login = () => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        console.log("signing in...", email.current.value, password.current.value);
+        handleSignInWithEmailPassword(email.current.value, password.current.value);        
     }
 
 

@@ -1,7 +1,7 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 import Header from './components/Header/Header'
 import { createContext, useState } from 'react'
-import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, signInWithPopup, signOut } from 'firebase/auth'
+import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth'
 import { app } from './firebase/firebase.config'
 
 // global context
@@ -10,6 +10,9 @@ export const userContext = createContext();
 function App() {
   const [user, setUser] = useState(null); //user log state
   const auth = getAuth(app);
+  const navigate = useNavigate();
+
+  // auth providers
   const providerGoogle = new GoogleAuthProvider();
 
   const handleSignIn = (provider) => {
@@ -18,11 +21,20 @@ function App() {
     .catch(error=>console.log(error.message))
   }
 
+  const handleSignInWithEmailPassword = (email, password) => {
+    signInWithEmailAndPassword(auth, email, password)
+    .then(result => {
+      setUser(result.user);
+      console.log(result.user);
+    })
+    .catch(error => console.log(error.message));
+  }
+
   const handleSignOut = () => {
     console.log("signing you out!");
     signOut(auth)
     .then(() => setUser(null))
-    .catch(error=>console.log("signout error : ", error.message))
+    .catch(error=>console.log("signout error : ", error.message));
   }
   
   const handleSignUp = (email, password) => {
@@ -35,7 +47,7 @@ function App() {
 
   return (
     <>
-      <userContext.Provider value={{ user, setUser, handleSignIn, handleSignUp, handleSignOut, providerGoogle }}>
+      <userContext.Provider value={{ user, setUser, handleSignIn, handleSignInWithEmailPassword, handleSignUp, handleSignOut, providerGoogle, navigate }}>
         <Header />
         <main className='py-7 px-12 text-center'>
           <Outlet />

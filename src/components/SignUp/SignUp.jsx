@@ -1,12 +1,10 @@
 import { useContext, useEffect, useRef } from "react";
 import { userContext } from "../../App";
-import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
-    const {user, handleSignUp} = useContext(userContext);
+    const {user, handleSignUp, navigate } = useContext(userContext);
     const email = useRef('');
     const password = useRef('');
-    const navigate = useNavigate();
     
     const handleSubmit = e => {
         e.preventDefault();
