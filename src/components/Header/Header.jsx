@@ -11,11 +11,11 @@ const Header = () => {
 
             {
                 user ?
-                <button onClick={handleSignOut} className="text-white rounded-lg font-semibold px-3 py-2 bg-[gray]">Sign Out</button> :
+                <button onClick={handleSignOut} className="text-white rounded-lg font-semibold px-3 py-2 bg-[gray] active:text-[15px] transition-all duration-[175mx]">Sign Out</button> :
                 <div className="flex justify-center items-center gap-7">
                     <NavLink className={({ isActive, isPending }) => isActive ? "active" : isPending ? 'pending' : ''} to={'/login'}>Login</NavLink>
                     <p>or</p>
-                    <NavLink className={({ isActive, isPending }) => isActive ? "active" : isPending ? 'pending' : ''} to={'/register'}>Sign Up</NavLink>
+                    <NavLink className={({ isActive, isPending }) => isActive ? "active" : isPending ? 'pending' : ''} to={'/signup'}>Sign Up</NavLink>
                 </div>
             }
         </div>

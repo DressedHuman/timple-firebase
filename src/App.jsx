@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import Header from './components/Header/Header'
 import { createContext, useState } from 'react'
-import { GoogleAuthProvider, getAuth, signInWithPopup, signOut } from 'firebase/auth'
+import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, signInWithPopup, signOut } from 'firebase/auth'
 import { app } from './firebase/firebase.config'
 
 // global context
@@ -24,10 +24,18 @@ function App() {
     .then(() => setUser(null))
     .catch(error=>console.log("signout error : ", error.message))
   }
+  
+  const handleSignUp = (email, password) => {
+    createUserWithEmailAndPassword(auth, email, password)
+    .then(result=>{
+      setUser(result.user);
+      console.log(`successfully signed up as ${result.user.email ? result.user.email : result.user.displayName}`)})
+    .catch(error => console.log(error.message))
+  }
 
   return (
     <>
-      <userContext.Provider value={{ user, setUser, handleSignIn, handleSignOut, providerGoogle }}>
+      <userContext.Provider value={{ user, setUser, handleSignIn, handleSignUp, handleSignOut, providerGoogle }}>
         <Header />
         <main className='py-7 px-12 text-center'>
           <Outlet />
